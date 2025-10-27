@@ -1,4 +1,3 @@
-README.md: |
   # 🐚 Minishell  
   **As beautiful as a shell — developed by [@iarslan](https://github.com/iarslan) & [@ygtdmr](https://github.com/ygtdmr)**  
 
