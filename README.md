@@ -1,5 +1,5 @@
 # 🐚 Minishell  
-**As beautiful as a shell — developed by [@iarslan](https://github.com/iarslan) & [@ygtdmr](https://github.com/ygtdmr)**  
+**As beautiful as a shell — developed by [@ifrankerem](https://github.com/ifrankerem) & [@ygtdmr](https://github.com/ygtdmr)**  
 
 Minishell is a small UNIX-like shell written in C.  
 It lets you execute commands, chain them together with pipes, redirect inputs and outputs, and manage environment variables — all within a lightweight, Bash-inspired environment.
