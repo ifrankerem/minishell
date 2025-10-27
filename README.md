@@ -128,4 +128,4 @@ You’re welcome to explore, learn, and modify — but please respect its academ
 
 ---
 
-🧑‍💻 *Developed with care by [@iarslan](https://github.com/iarslan) & [@ygtdmr](https://github.com/ygtdmr)*
+🧑‍💻 *Developed with care by [@ifrankerem](https://github.com/ifrankerem) & [@ygtdmr](https://github.com/ygtdmr)*
