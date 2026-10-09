@@ -1,53 +1,85 @@
-# 🐚 Minishell  
-**As beautiful as a shell — developed by [@ifrankerem](https://github.com/ifrankerem) & [@ygtdmr](https://github.com/ygtdmr)**  
+<div align="center">
 
-Minishell is a small UNIX-like shell written in C.  
-It lets you execute commands, chain them together with pipes, redirect inputs and outputs, and manage environment variables — all within a lightweight, Bash-inspired environment.
+# 🐚 minishell
 
----
+**A small UNIX-like shell in C — pipes, redirections, signals and the whole variable-environment dance.**
 
-## 🚀 Overview
+![Language](https://img.shields.io/badge/language-C-00599C?style=flat-square)
+![42](https://img.shields.io/badge/42-Common%20Core-000000?style=flat-square)
+![Readline](https://img.shields.io/badge/GNU%20Readline-42BB6B?style=flat-square)
+![Norminette](https://img.shields.io/badge/norm-42%20standard-2b9348?style=flat-square)
+![Stars](https://img.shields.io/github/stars/ifrankerem/minishell?style=flat-square)
 
-Minishell acts as a **miniature Bash**, allowing you to:
-- Type and execute commands interactively
-- Combine multiple commands using pipes (`|`)
-- Redirect input/output with `<`, `>`, `>>`, and `<<`
-- Handle signals (`Ctrl+C`, `Ctrl+D`, `Ctrl+\`) just like in Bash
-- Work with environment variables (`$HOME`, `$PATH`, `$?`)
-- Use built-in commands such as `echo`, `cd`, `pwd`, `env`, `export`, `unset`, and `exit`
+</div>
 
-It’s a fully functional mini shell that helps you understand how command interpreters work behind the scenes.
+> **As beautiful as a shell** — with [@ygtdmr](https://github.com/ygtdmr)
 
 ---
 
-## 🧰 Installation & Setup
+## 📋 Table of Contents
 
-### 1️⃣ Clone the repository
-```bash
-git clone https://github.com/iarslan/minishell.git
+- [About](#about)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [What You Can Try](#what-you-can-try)
+- [Bonus](#bonus)
+- [Under the Hood](#under-the-hood)
+- [License](#license)
+
+---
+
+## 📖 About
+
+**minishell** is a miniature **Bash** written in C. It executes commands,
+chains them through pipes, redirects input and output, and manages the
+environment — all in a lightweight, prompt-driven loop.
+
+It's the 42 project that forces you to confront how a command interpreter works
+under the hood: fork/exec, file descriptors, signal handling and a tokenizer
+that has to agree with itself.
+
+---
+
+## ✨ Features
+
+- Interactive command execution with a prompt
+- Command chaining with pipes (`|`)
+- Input/output redirection: `<`, `>`, `>>`, `<<` (heredoc)
+- Signal handling: `Ctrl+C`, `Ctrl+D`, `Ctrl+\` behave like Bash
+- Environment variables: `$HOME`, `$PATH`, `$?`
+- Builtins: `echo`, `cd`, `pwd`, `env`, `export`, `unset`, `exit`
+- Quoting: single and double quotes, backslash-style escapes
+- A concrete parser → lexer → executioner pipeline
+
+---
+
+## 🧰 Getting Started
+
+**Prerequisites**
+
+- `gcc` or `clang`, `make`
+- The **GNU Readline** library
+
+**Build**
+
+```sh
+git clone https://github.com/ifrankerem/minishell.git
 cd minishell
-```
-
-### 2️⃣ Build the project
-Make sure you have `make` and the **GNU Readline** library installed.  
-Then simply run:
-```bash
 make
 ```
 
-### 3️⃣ Run Minishell
-```bash
+**Run**
+
+```sh
 ./minishell
 ```
 
-### 4️⃣ Exit anytime
-```bash
-exit
-```
+Exit with `exit` or `Ctrl+D`.
 
 ---
 
-## 💬 Example Usage
+## 💻 Usage
 
 ```bash
 $ ./minishell
@@ -61,8 +93,9 @@ minishell> cd src
 minishell> pwd
 /home/user/minishell/src
 
-minishell> echo $HOME
-/home/user
+minishell> export NAME=Minishell
+minishell> echo $NAME
+Minishell
 
 minishell> echo "Goodbye!" > bye.txt
 minishell> cat bye.txt
@@ -75,57 +108,70 @@ minishell> exit
 
 ## 🪄 What You Can Try
 
-- 🔁 **Piping commands**
+- **Piping commands**
   ```bash
   cat file.txt | grep keyword | wc -l
   ```
-
-- 📂 **Redirections**
+- **Redirections**
   ```bash
   echo "hello" > file.txt
   cat < file.txt
   echo "again" >> file.txt
   ```
-
-- 🧩 **Environment variables**
+- **Environment variables**
   ```bash
   export NAME=Minishell
   echo $NAME
   unset NAME
   ```
-
-- 🧘 **Signal handling**
-  - `Ctrl+C` → Clears line and shows a new prompt  
-  - `Ctrl+D` → Exits shell  
-  - `Ctrl+\` → Ignored (no effect)  
+- **Signal handling** — `Ctrl+C` clears the line for a new prompt, `Ctrl+D`
+  exits, `Ctrl+\` `Ctrl+Z` pass through to Bash-like behaviour.
 
 ---
 
-## 🌟 Bonus Features (Optional)
+## 🌟 Bonus
 
-In the bonus version, you can also:
-- Use logical operators `&&` and `||` with precedence
-- Expand wildcards (`*`) to match files in the current directory
-
----
-
-## 💡 Why This Project Matters
-
-Minishell is a deep dive into:
-- Process creation and management (`fork`, `execve`, `wait`)
-- File descriptor and pipe handling
-- Signal and terminal control
-- Command parsing and environment management
-
-It’s a practical learning experience for anyone exploring **system programming**, **UNIX internals**, or **42 curriculum fundamentals**.
+- Logical operators `&&` and `||` with correct precedence
+- Wildcard expansion (`*`) matching files in the working directory
+- Heredocs that read into a pipeline, as `bash` does
 
 ---
 
-## 📜 License
+## ⚙️ Under the Hood
 
-This project was built for educational purposes as part of the **42 School curriculum**.  
-You’re welcome to explore, learn, and modify — but please respect its academic intent.
+The program is split into the usual shell pipeline:
+
+| Stage | Files |
+|---|---|
+| Readline input and loop | `minishell.c` |
+| Tokenizing | `lexer.c`, `lexer_utils.c` |
+| Parsing into a command table | `parser.c`, `parser_utils.c` |
+| Expansion | `expand.c`, `expand_utils.c` |
+| Heredoc | `heredoc.c` |
+| Execution | `executer.c`, `executer_utils.c` |
+| Environment | `env_utils_1.c`, `env_utils_2.c` |
+
+The design emphasises an environment table kept as a `NULL`-terminated array
+of `KEY=value` strings, rebuilt whenever `export` or `unset` runs, and
+correct signal masks around `fork`/`execve`/`wait` so the prompt stays
+responsive.
 
 ---
 
-🧑‍💻 *Developed with care by [@ifrankerem](https://github.com/ifrankerem) & [@ygtdmr](https://github.com/ygtdmr)*
+## 📄 License
+
+Built for the **42 Common Core** curriculum, shared for learning and portfolio
+purposes. Respect the academic intent if you are a fellow student.
+
+---
+
+## 👤 Author
+
+**İrfan Kerem Arslan** — [@ifrankerem](https://github.com/ifrankerem)
+**Devrim** — [@ygtdmr](https://github.com/ygtdmr)
+
+---
+
+## 🙏 Acknowledgements
+
+- [awesome-readme](https://github.com/matiassingers/awesome-readme) — structure inspiration for this README
